@@ -51,20 +51,27 @@ void loop() {
 // put function definitions here:
 
 void getVal(){
+  float voltage = pzem.voltage();
+  float current = pzem.current();
+  float power = pzem.power();
+  float energy = pzem.energy();
+  float frequency = pzem.frequency();
+  float pf = pzem.pf();
   StaticJsonDocument<200> doc;
-    doc["voltage"] = 220;
-    doc["current"] = 0.3;
-    doc["power"] = 10;
-    doc["energy"] = 11;
-    doc["freq"] = 50;
-    doc["pf"] = 0.2;
+    doc["voltage"] = voltage;
+    doc["current"] = current;
+    doc["power"] = power;
+    doc["energy"] = energy;
+    doc["freq"] = frequency;
+    doc["pf"] = pf;
     serializeJson(doc,Serial);
     Serial.println();
 }
 
 void resetKwh(){
   StaticJsonDocument<200> doc;
-    doc["status"] = false;
+  bool stat = pzem.resetEnergy();
+    doc["status"] = stat;
 
     serializeJson(doc,Serial);
     Serial.println();
