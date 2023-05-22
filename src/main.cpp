@@ -16,6 +16,8 @@
 #define PZEM_TX_PIN 13
 #endif
 
+#define DEV_ID 1
+
 SoftwareSerial pzemSWSerial(PZEM_RX_PIN, PZEM_TX_PIN);
 PZEM004Tv30 pzem(pzemSWSerial);
 
@@ -58,6 +60,7 @@ void getVal(){
   float frequency = pzem.frequency();
   float pf = pzem.pf();
   StaticJsonDocument<200> doc;
+    doc["id"] = DEV_ID;
     doc["voltage"] = voltage;
     doc["current"] = current;
     doc["power"] = power;
@@ -71,6 +74,7 @@ void getVal(){
 void resetKwh(){
   StaticJsonDocument<200> doc;
   bool stat = pzem.resetEnergy();
+    doc["id"] = DEV_ID;
     doc["status"] = stat;
 
     serializeJson(doc,Serial);
